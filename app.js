@@ -7,13 +7,13 @@ import cors from 'cors';
 const app = express();
 app.use(express.json());
 
-const corsOptions = {
-    origin: ['http://localhost:3000'],
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true,
-  };
+// const corsOptions = {
+//     origin: ['http://localhost:3000'],
+//     methods: ['GET', 'POST', 'PUT', 'DELETE'],
+//     credentials: true,
+//   };
   
-  app.use(cors(corsOptions));
+app.use(cors());
 
   const dbUser = process.env.DB_USER;
   const dbPass = process.env.DB_PASS;
