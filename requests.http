@@ -1,0 +1,28 @@
+POST http://localhost:3000/products
+Content-Type: application/json
+
+{
+  "name": "Laptop",
+  "description": "High performance laptop.",
+  "price": 1200,
+  "tags": ["tech", "pc", "work"]
+}
+###
+GET http://localhost:3000/products
+
+###
+PATCH http://localhost:3000/products/67544da6a5d4b5529d817e65
+
+###
+POST https://four-sprint-mission-be-cfjg.onrender.com/products
+Content-Type: application/json
+
+{
+  "name": "Laptop",
+  "description": "High performance laptop.",
+  "price": 1200,
+  "tags": ["tech", "pc", "work"]
+}
+
+###
+GET http://localhost:3000/products?keyword=Laptop
