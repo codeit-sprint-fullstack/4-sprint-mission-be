@@ -1,0 +1,38 @@
+GET http://localhost:3001/products?sort=oldest&limit=10&page=1&search=PS5
+
+###
+
+GET http://https://backend-c2ut.onrender.com/products?sort=oldest&limit=10&page=1&search=PS5
+
+###
+
+GET http://localhost:3000/products/6753d92d0ba17d1e827bb
+###
+
+POST http://localhost:3000/product
+Content-Type: application/json
+
+{
+    "name": "PS5 30주년 버전 팝니당",
+    "description": "PS5 30주년 버전 팝니다",
+    "price": 700000,
+    "images": ["https://img.youtube.com/vi/NULUo-7gNAI/maxresdefault.jpg"]
+}
+
+###
+
+PATCH http://localhost:3000/products/6753d9080ba17d1e82ef97b9
+Content-Type: application/json
+
+{
+    "name": "PS5 30주년 버전 팝니당",
+    "description": "PS5 30주년 버전 팝니다",
+    "price": 600000,
+    "images": ["https://img.youtube.com/vi/NULUo-7gNAI/maxresdefault.jpg"],
+    "tags": ["30주년", "PS5", "급처"]
+}
+
+###
+
+DELETE http://localhost:3000/products/6753d9080ba17d1e82ef97b9
+

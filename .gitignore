@@ -1,0 +1,32 @@
+# Node.js 기본
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 환경 변수 파일
+.env
+env.js
+
+# 빌드 디렉터리
+dist/
+build/
+
+# OS 및 편집기 파일
+.DS_Store
+Thumbs.db
+
+# IDE/Editor 관련
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# 로그 파일
+*.log
+
+# 테스트 관련
+coverage/
+requests.http

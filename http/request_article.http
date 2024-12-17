@@ -1,0 +1,33 @@
+GET http://localhost:4000/articles?sort=recent&limit=10&page=1&search=PS5
+
+###
+
+GET http://https://backend-c2ut.onrender.com/articles?sort=oldest&limit=10&page=1&search=PS5
+
+###
+
+GET http://localhost:4000/articles/cm4skodgm00036u331w9xxd95
+###
+
+POST http://localhost:4000/articles
+Content-Type: application/json
+
+{
+    "title": "PS5 30주년 버전 팝니다13",
+    "content": "PS5 30주년 버전 팝니다13"
+}
+
+###
+
+PATCH http://localhost:4000/articles/cm4sl1iwu0001a96yr1ry9yu8
+Content-Type: application/json
+
+{
+    "title": "PS5 30주년 버전 팝니다2 -> 3",
+    "content": "PS5 30주년 버전 팝니다2 -> 3"
+}
+
+###
+
+DELETE http://localhost:4000/articles/cm4sl1iwu0001a96yr1ry9yu8
+
