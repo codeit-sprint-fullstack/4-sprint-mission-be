@@ -1,13 +1,23 @@
-import mongoose from "mongoose";
 import products from "./mock.js";
-import { Product } from "../models/product.js";
-import { config } from "dotenv";
+import { PrismaClient } from "@prisma/client";
 
-config();
+const prisma = new PrismaClient();
 
-await mongoose.connect(process.env.DATABASE_URL);
+async function main() {
+  try {
+    await prisma.product.deleteMany({});
+    await prisma.product.createMany({
+      data: products,
+      skipDuplicates: true,
+    });
+  } catch (e) {
+    throw e;
+  } finally {
+    await prisma.$disconnect();
+  }
+}
 
-await Product.deleteMany({});
-await Product.insertMany(products);
-
-mongoose.connection.close();
+// 실행
+main().catch((e) => {
+  process.exit(1);
+});
