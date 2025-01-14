@@ -1,16 +1,53 @@
 
-PATCH  http://localhost:3000/comments/492cc17e-ae41-4156-9a33-748f76adb7c4
+PATCH  http://localhost:5500/comments/1c822da0-49ce-4d78-a110-96c335059295
 Content-Type: application/json
 
 {
   "content":"댓글 수정 테스트"
 }
 
-###
-GET http://localhost:3000/products/comments
 
 ###
-GET http://localhost:3000/products/comments?limit=3&cursor=8cbf2c41-8974-412e-8d43-98d4020a7217
+PATCH  http://localhost:5500/comments/7c971e88-a582-4d8d-828b-6f6209faab69
+Content-Type: application/json
+
+{
+  "content" : "댓글 수정"
+}
 
 ###
-GET http://localhost:3000/ariticles/comments
+POST http://localhost:5500/products/1e112c02-7c92-4d52-b76e-485e41e3f64d/comments
+Content-Type: application/json
+
+{
+  "content" : "파나소닉 면도기에 댓글 달기"
+}
+
+
+
+###
+GET http://localhost:5500/comments
+
+###
+GET http://localhost:5500/comments/1c822da0-49ce-4d78-a110-96c335059295
+
+# 조던 농구화(댓글 있음)
+###
+GET http://localhost:5500/products/10f12b65-20f5-43d9-860e-faf4890e2a9e/comments?limit=2&cursor=1c822da0-49ce-4d78-a110-96c335059295
+
+# 조던 농구화(댓글 있음)
+###
+GET http://localhost:5500/products/10f12b65-20f5-43d9-860e-faf4890e2a9e/comments
+
+# 파나소닉 면도기
+###
+GET http://localhost:5500/products/1e112c02-7c92-4d52-b76e-485e41e3f64d/comments
+
+# 게시글 댓글 
+###
+GET http://localhost:5500/articles/0456b46f-7a18-4211-b7a1-2216f84cc2cb/comments
+
+
+###
+GET http://localhost:5500/products/comments?limit=3&cursor=8cbf2c41-8974-412e-8d43-98d4020a7217
+

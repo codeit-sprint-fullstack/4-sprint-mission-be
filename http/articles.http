@@ -1,28 +1,38 @@
 ###
-POST http://localhost:3000/articles
+POST http://localhost:5500/articles
 Content-Type: application/json
 
 {
-  "title":"갤럭시 S40",
+  "title":"돌겠다 S40",
   "content":"쌈송에서 만든 최신 폰"
 }
 
 ###
-PATCH  http://localhost:3000/articles/0456b46f-7a18-4211-b7a1-2216f84cc2cb
+POST http://localhost:5500/post
 Content-Type: application/json
 
 {
-  "content":"쌈송에서 만든 망폰"
+  "title":"포스트 S40",
+  "content":"쌈송에서 만든 최신 폰"
 }
 
 ###
-GET http://localhost:3000/articles/0456b46f-7a18-4211-b7a1-2216f84cc2cb
+PATCH  http://localhost:5500/articles/8ab7c05d-c252-49e0-a9e0-e5d76ba4b558
+Content-Type: application/json
+
+{
+  "title":"글이 잘 작성되는건가요..게시판!!!",
+  "content":"냉무 ㅋ아 너무 짧으면 안 되는구나 ㅠㅠ"
+}
 
 ###
-GET http://localhost:3000/articles
+GET http://localhost:5500/articles/0456b46f-7a18-4211-b7a1-2216f84cc2cb
 
 ###
-POST http://localhost:3000/articles/0456b46f-7a18-4211-b7a1-2216f84cc2cb/comments
+GET http://localhost:5500/articles?limit=20
+
+###
+POST http://localhost:5500/articles/0456b46f-7a18-4211-b7a1-2216f84cc2cb/comments
 Content-Type: application/json
 
 {
@@ -30,4 +40,7 @@ Content-Type: application/json
 }
 
 ###
-DELETE  http://localhost:3000/comments/cdd15137-d60a-4f58-8b71-398d802cdaa7
+GET http://localhost:5500/articles/comments
+
+###
+GET http://localhost:5500/comments/products

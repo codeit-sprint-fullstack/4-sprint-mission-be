@@ -1,13 +1,13 @@
-GET http://localhost:3000/products
+GET http://localhost:5500/products?limit=3
 
 ###
-GET http://localhost:3000/products?sort=recent&keyword=갤럭시
+GET http://localhost:5500/products?keyword=아이폰
 
 ###
-GET http://localhost:3000/products/10f12b65-20f5-43d9-860e-faf4890e2a9e
+GET http://localhost:5500/products/10f12b65-20f5-43d9-860e-faf4890e2a9e
 
 ###
-POST http://localhost:3000/products
+POST http://localhost:5500/products
 Content-Type: application/json
 
 {
@@ -18,7 +18,7 @@ Content-Type: application/json
 }
 
 ###
-PATCH  http://localhost:3000/products/0486722d-02f8-4a40-bdb0-0bfb2dfaeb70
+PATCH  http://localhost:5500/products/0486722d-02f8-4a40-bdb0-0bfb2dfaeb70
 Content-Type: application/json
 
 {
@@ -27,11 +27,11 @@ Content-Type: application/json
 }
 
 ###
-DELETE  http://localhost:3000/products/b833f160-3ae9-4c23-94c5-f44fcdc73ccc
+DELETE  http://localhost:5500/products/b833f160-3ae9-4c23-94c5-f44fcdc73ccc
 
 ###
 
-POST http://localhost:3000/products/10f12b65-20f5-43d9-860e-faf4890e2a9e/comments
+POST http://localhost:5500/products/10f12b65-20f5-43d9-860e-faf4890e2a9e/comments
 Content-Type: application/json
 
 {
