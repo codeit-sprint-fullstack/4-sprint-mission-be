@@ -5,7 +5,7 @@ export const CreateProduct = s.object({
   description: s.size(s.string(), 10, 100),
   price: s.min(s.number(), 0),
   tags: s.array(s.size(s.string(), 1, 5)),
-  favoriteCount: s.optional(s.min(s.number(), 0)),
+  likeCount: s.optional(s.min(s.number(), 0)),
   images: s.optional(s.array(s.string())),
 });
 

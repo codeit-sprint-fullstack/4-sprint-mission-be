@@ -53,3 +53,5 @@ GET http://localhost:3100/article/dc79959a-8f68-4ee0-aa5d-cfbc13874d2f
 ###
 GET http://localhost:3100/article/dc79959a-8f68-4ee0-aa5d-cfbc13874d2f/comments
 
+###
+DELETE  http://localhost:3100/article/12f4972e-1a63-4f2c-a8d4-92c6c97b1880/comment

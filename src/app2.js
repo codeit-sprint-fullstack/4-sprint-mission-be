@@ -72,7 +72,7 @@ app.get(
     }
 
     const sortOption =
-      orderBy === "recent" ? { createdAt: "desc" } : { favoriteCount: "desc" };
+      orderBy === "recent" ? { createdAt: "desc" } : { likeCount: "desc" };
 
     const search = keyword
       ? {
@@ -89,7 +89,7 @@ app.get(
         name: true,
         price: true,
         createdAt: true,
-        favoriteCount: true,
+        likeCount: true,
       },
       orderBy: sortOption,
       skip: parseInt(offset),
@@ -249,7 +249,7 @@ app.get(
     const offset = (page - 1) * pageSize;
 
     const sortOption =
-      orderBy === "recent" ? { createdAt: "desc" } : { favoriteCount: "desc" };
+      orderBy === "recent" ? { createdAt: "desc" } : { likeCount: "desc" };
     const search = keyword
       ? {
           OR: [{ title: { contains: keyword, mode: "insensitive" } }],
