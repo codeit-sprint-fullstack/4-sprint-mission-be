@@ -83,15 +83,18 @@ async function deleteArticle(req, res, next) {
 async function likeArtice(req, res, next) {
   try {
     const articleId = req.params.articleId;
-    await prisma.article.findUniqueOrThrow({
-      where: { id: articleId },
+    const result = await prisma.$transaction(async (prisma) => {
+      await prisma.article.findUniqueOrThrow({
+        where: { id: articleId },
+      });
+      const article = await prisma.article.update({
+        where: { id: articleId },
+        data: { isLiked: true },
+      });
+      return article;
     });
 
-    const article = await prisma.article.update({
-      where: { id: articleId },
-      data: { isLiked: true },
-    });
-    res.status(200).send(article);
+    res.status(200).send(result);
   } catch (e) {
     next(e);
   }
@@ -100,15 +103,18 @@ async function likeArtice(req, res, next) {
 async function disLikeArtice(req, res, next) {
   try {
     const articleId = req.params.articleId;
-    await prisma.article.findUniqueOrThrow({
-      where: { id: articleId },
-    });
+    const result = await prisma.$transaction(async (prisma) => {
+      await prisma.article.findUniqueOrThrow({
+        where: { id: articleId },
+      });
 
-    const article = await prisma.article.update({
-      where: { id: articleId },
-      data: { isLiked: false },
+      const article = await prisma.article.update({
+        where: { id: articleId },
+        data: { isLiked: false },
+      });
+      return article;
     });
-    res.status(200).send(article);
+    res.status(200).send(result);
   } catch (e) {
     next(e);
   }

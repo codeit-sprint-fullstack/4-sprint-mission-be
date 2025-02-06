@@ -34,7 +34,7 @@ articleRouter.post(
   authenticatedOnly,
   articleService.likeArtice
 );
-articleRouter.post(
+articleRouter.delete(
   "/:articleId/like",
   authenticatedOnly,
   articleService.disLikeArtice
