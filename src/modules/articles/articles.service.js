@@ -2,11 +2,11 @@ const prisma = require("../../db/prisma/client");
 
 async function getArticles(req, res, next) {
   try {
-    let { orderBy, page, pageSize, keyword } = req.query;
+    const { orderBy, page, pageSize, keyword } = req.query;
     const offset = (page - 1) * pageSize;
 
     const sortOption =
-      orderBy === "recent" ? { createdAt: "desc" } : { likeCount: "desc" };
+      orderBy === "recent" ? { createdAt: "desc" } : { favoriteCount: "desc" };
     const search = keyword
       ? {
           OR: [{ title: { contains: keyword, mode: "insensitive" } }],
@@ -66,7 +66,6 @@ async function updateArticle(req, res, next) {
     const findArticle = await prisma.article.findUniqueOrThrow({
       where: { id: articleId },
     });
-    console.log(userId, findArticle.writerId);
     if (userId !== findArticle.writerId) throw new Error("401/Unathorized");
     const article = await prisma.article.update({
       where: { id: articleId },
@@ -124,7 +123,7 @@ async function likeArtice(req, res, next) {
 
       const article = await prisma.article.update({
         where: { id: articleId },
-        data: { likeCount: { increment: 1 } },
+        data: { favoriteCount: { increment: 1 } },
         include: { writer: { select: { id: true, nickname: true } } },
         omit: { writerId: true },
       });
@@ -158,7 +157,7 @@ async function disLikeArtice(req, res, next) {
 
       const article = await prisma.article.update({
         where: { id: articleId },
-        data: { likeCount: { decrement: 1 } },
+        data: { favoriteCount: { decrement: 1 } },
         include: { writer: { select: { id: true, nickname: true } } },
         omit: { writerId: true },
       });

@@ -27,7 +27,7 @@ const ProductSchma = new mongoose.Schema(
       //   message: "tag is too long",
       // }, 테스트를 위해서 잠시 지웠습니다.
     },
-    likeCount: {
+    favoriteCount: {
       type: Number,
       min: 0,
       default: 0,
