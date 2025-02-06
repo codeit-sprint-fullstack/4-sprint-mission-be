@@ -6,10 +6,12 @@ const prisma = new PrismaClient();
 async function main() {
   try {
     await prisma.product.deleteMany({});
-    await prisma.product.createMany({
-      data: products,
-      skipDuplicates: true,
-    });
+    await prisma.article.deleteMany({});
+    await prisma.user.deleteMany({});
+    // await prisma.product.createMany({
+    //   data: products,
+    //   skipDuplicates: true,
+    // });
   } catch (e) {
     throw e;
   } finally {

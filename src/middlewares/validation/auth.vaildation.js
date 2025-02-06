@@ -8,10 +8,10 @@ const signUpContextSchema = z.object({
     .max(20, { message: "nickname must be 20 or fewer characters long" }),
   password: z
     .string()
-    .min(1, { message: "password must be 8 or more characters long" }),
+    .min(8, { message: "password must be 8 or more characters long" }),
   passwordConfirmation: z
     .string()
-    .min(1, { message: "password must be 8 or more characters long" })
+    .min(8, { message: "password must be 8 or more characters long" })
     .refine((data) => data.passwordConfirmation === data.password, {
       message: "password don't match ",
     }),
@@ -21,7 +21,7 @@ const signInContextSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
   password: z
     .string()
-    .min(1, { message: "password must be 8 or more characters long" }),
+    .min(8, { message: "password must be 8 or more characters long" }),
 });
 
 function validateSignUpContext(req, res, next) {

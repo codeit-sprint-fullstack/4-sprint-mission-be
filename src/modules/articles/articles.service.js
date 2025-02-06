@@ -17,6 +17,8 @@ async function getArticles(req, res, next) {
       orderBy: sortOption,
       skip: parseInt(offset),
       take: parseInt(pageSize),
+      include: { writer: { select: { id: true, nickname: true } } },
+      omit: { writerId: true },
     });
     res.status(200).send(articles);
   } catch (e) {
@@ -30,6 +32,8 @@ async function getArticle(req, res, next) {
 
     const article = await prisma.article.findUniqueOrThrow({
       where: { id: articleId },
+      include: { writer: { select: { id: true, nickname: true } } },
+      omit: { writerId: true },
     });
 
     res.send(article);
@@ -40,8 +44,13 @@ async function getArticle(req, res, next) {
 
 async function createArticle(req, res, next) {
   try {
+    const writerId = req.userId;
     const article = await prisma.article.create({
-      data: { ...req.body },
+      data: { writerId, ...req.body },
+      include: {
+        writer: { select: { id: true, nickname: true } },
+      },
+      omit: { writerId: true },
     });
     res.status(200).send(article);
   } catch (e) {
@@ -51,13 +60,21 @@ async function createArticle(req, res, next) {
 
 async function updateArticle(req, res, next) {
   try {
+    const userId = req.userId;
     const articleId = req.params.articleId;
-    await prisma.article.findUniqueOrThrow({
+
+    const findArticle = await prisma.article.findUniqueOrThrow({
       where: { id: articleId },
     });
+    console.log(userId, findArticle.writerId);
+    if (userId !== findArticle.writerId) throw new Error("401/Unathorized");
     const article = await prisma.article.update({
       where: { id: articleId },
       data: { ...req.body },
+      include: {
+        writer: { select: { id: true, nickname: true } },
+      },
+      omit: { writerId: true },
     });
     res.status(200).send(article);
   } catch (e) {
@@ -67,10 +84,12 @@ async function updateArticle(req, res, next) {
 
 async function deleteArticle(req, res, next) {
   try {
+    const userId = req.userId;
     const articleId = req.params.articleId;
-    await prisma.article.findUniqueOrThrow({
+    const findArticle = await prisma.article.findUniqueOrThrow({
       where: { id: articleId },
     });
+    if (userId !== findArticle.writerId) throw new Error("401/Unathorized");
     await prisma.article.delete({
       where: { id: articleId },
     });
@@ -82,16 +101,34 @@ async function deleteArticle(req, res, next) {
 
 async function likeArtice(req, res, next) {
   try {
+    const userId = req.userId;
     const articleId = req.params.articleId;
     const result = await prisma.$transaction(async (prisma) => {
+      //헷갈리니까 정리
+      //1. 해당 article이 있는지 확인
       await prisma.article.findUniqueOrThrow({
         where: { id: articleId },
       });
+      //2. 좋아요가 이미 눌려저 있는지 확인
+      const existingFavorite = await prisma.favoriteArticle.findUnique({
+        where: { userId_articleId: { userId, articleId } },
+      });
+      //만약 있으면 에러러
+      if (existingFavorite) {
+        throw new Error("400/Already exist favorite");
+      }
+
+      await prisma.favoriteArticle.create({
+        data: { userId, articleId },
+      });
+
       const article = await prisma.article.update({
         where: { id: articleId },
-        data: { isLiked: true },
+        data: { likeCount: { increment: 1 } },
+        include: { writer: { select: { id: true, nickname: true } } },
+        omit: { writerId: true },
       });
-      return article;
+      return { ...article, isLiked: true };
     });
 
     res.status(200).send(result);
@@ -102,18 +139,32 @@ async function likeArtice(req, res, next) {
 
 async function disLikeArtice(req, res, next) {
   try {
+    const userId = req.userId;
     const articleId = req.params.articleId;
     const result = await prisma.$transaction(async (prisma) => {
+      //헷갈리니까 정리
+      //1. 해당 article이 있는지 확인
       await prisma.article.findUniqueOrThrow({
         where: { id: articleId },
+      });
+      //2. 좋아요가 이미 눌려저 있는지 확인 없으면 에러러
+      await prisma.favoriteArticle.findUniqueOrThrow({
+        where: { userId_articleId: { userId, articleId } },
+      });
+
+      await prisma.favoriteArticle.delete({
+        where: { userId_articleId: { userId, articleId } },
       });
 
       const article = await prisma.article.update({
         where: { id: articleId },
-        data: { isLiked: false },
+        data: { likeCount: { decrement: 1 } },
+        include: { writer: { select: { id: true, nickname: true } } },
+        omit: { writerId: true },
       });
-      return article;
+      return { ...article, isLiked: false };
     });
+
     res.status(200).send(result);
   } catch (e) {
     next(e);
@@ -139,6 +190,10 @@ async function getComments(req, res, next) {
       orderBy: {
         createdAt: "asc",
       },
+      include: {
+        writer: { select: { id: true, nickname: true, image: true } },
+      },
+      omit: { writerId: true },
     });
 
     const nextCursor =
@@ -155,8 +210,8 @@ async function getComments(req, res, next) {
 
 async function createComment(req, res, next) {
   try {
+    const userId = req.userId;
     const articleId = req.params.articleId;
-
     await prisma.article.findUniqueOrThrow({
       where: { id: articleId },
     });
@@ -164,7 +219,12 @@ async function createComment(req, res, next) {
       data: {
         content: req.body.content,
         articleId: articleId,
+        writerId: userId,
       },
+      include: {
+        writer: { select: { id: true, nickname: true, image: true } },
+      },
+      omit: { writerId: true },
     });
 
     res.status(201).send(comment);
