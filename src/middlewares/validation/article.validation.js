@@ -1,4 +1,3 @@
-const { Cursor } = require("mongoose");
 const { z } = require("zod");
 
 const pageQuarySchema = z.object({
@@ -51,8 +50,7 @@ function validatePageQuary(req, res, next) {
     });
 
     if (!parsedQuery.success) {
-      const errorMessages = parsedQuery.error.errors.map((err) => err.message);
-      throw new Error(`400/Validation error: ${errorMessages.join(", ")}`);
+      throw new Error(`400/Validation error: ${parsedQuery.error}`);
     }
     req.query = parsedQuery.data;
     next();
@@ -68,10 +66,7 @@ function validateCreateAritcle(req, res, next) {
       content: req.body.content,
     });
     if (!parsedArticleContext.success) {
-      const errorMessages = parsedArticleContext.error.errors.map(
-        (err) => err.message
-      );
-      throw new Error(`400/Validation error: ${errorMessages.join(", ")}`);
+      throw new Error(`400/Validation error: ${parsedArticleContext.error}`);
     }
 
     req.body = parsedArticleContext.data;
@@ -89,10 +84,7 @@ function validateUpdateAritcle(req, res, next) {
       content: req.body.content,
     });
     if (!parsedArticleContext.success) {
-      const errorMessages = parsedArticleContext.error.errors.map(
-        (err) => err.message
-      );
-      throw new Error(`400/Validation error: ${errorMessages.join(", ")}`);
+      throw new Error(`400/Validation error: ${parsedArticleContext.error}`);
     }
 
     req.body = parsedArticleContext.data;
@@ -109,8 +101,7 @@ function validateGetComments(req, res, next) {
       cursor: req.query.cursor,
     });
     if (!parsedQuery.success) {
-      const errorMessages = parsedQuery.error.errors.map((err) => err.message);
-      throw new Error(`400/Validation error: ${errorMessages.join(", ")}`);
+      throw new Error(`400/Validation error: ${parsedQuery.error}`);
     }
 
     req.query = parsedQuery.data;
@@ -126,10 +117,7 @@ function validateCommentSchema(req, res, next) {
       content: req.body.content,
     });
     if (!parsedContent.success) {
-      const errorMessages = parsedContent.error.errors.map(
-        (err) => err.message
-      );
-      throw new Error(`400/Validation error: ${errorMessages.join(", ")}`);
+      throw new Error(`400/Validation error: ${parsedContent.error}`);
     }
     req.body = parsedContent.data;
     next();

@@ -43,7 +43,7 @@ async function createArticle(req, res, next) {
     const article = await prisma.article.create({
       data: { ...req.body },
     });
-    res.status(201).send(article);
+    res.status(200).send(article);
   } catch (e) {
     next(e);
   }
