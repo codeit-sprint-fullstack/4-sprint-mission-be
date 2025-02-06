@@ -1,25 +1,18 @@
 require("dotenv").config();
 const cors = require("cors");
-
 const express = require("express");
-
 const morgan = require("morgan");
+
+const app = express();
 const router = require("./modules/index.controller");
 const errorHandler = require("./middlewares/error.middlewear");
 
-const app = express();
+const swaggerUi = require("swagger-ui-express");
+const swaggerFile = require("./swagger/swagger-output.json"); // 여기서 json 가져옴
 
-app.use(
-  cors()
-  //   {
-  //   origin: [
-  //     "https://4-sprint-mission-fe-c56s.vercel.app",
-  //     "http://localhost:3000",
-  //     "https://4-sprint-mission-fe-8ens-l8drmvvos-sungmins-projects-b79f4630.vercel.app",
-  //   ],
-  // }
-);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerFile)); //여기서 실행
 
+app.use(cors());
 app.use(morgan("combined"));
 app.use(express.json());
 

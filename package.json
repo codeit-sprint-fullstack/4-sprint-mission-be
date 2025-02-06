@@ -32,7 +32,8 @@
     "@types/bcrypt": "^5.0.2",
     "@types/jsonwebtoken": "^9.0.8",
     "@types/morgan": "^1.9.9",
-    "nodemon": "^3.1.7"
+    "nodemon": "^3.1.7",
+    "swagger-autogen": "^2.23.7"
   },
   "prisma": {
     "schema": "src/db/prisma/schema.prisma"
