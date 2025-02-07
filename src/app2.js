@@ -20,6 +20,7 @@ app.use(
     origin: [
       "https://4-sprint-mission-fe-c56s.vercel.app",
       "http://localhost:3000",
+      "https://4-sprint-mission-fe-8ens-l8drmvvos-sungmins-projects-b79f4630.vercel.app",
     ],
   })
 );
@@ -71,7 +72,7 @@ app.get(
     }
 
     const sortOption =
-      orderBy === "recent" ? { createdAt: "desc" } : { favoriteCount: "desc" };
+      orderBy === "recent" ? { createdAt: "desc" } : { likeCount: "desc" };
 
     const search = keyword
       ? {
@@ -88,7 +89,7 @@ app.get(
         name: true,
         price: true,
         createdAt: true,
-        favoriteCount: true,
+        likeCount: true,
       },
       orderBy: sortOption,
       skip: parseInt(offset),
@@ -225,7 +226,7 @@ app.delete(
 app.get(
   "/article",
   asyncHandler(async (req, res) => {
-    const {
+    let {
       orderBy = "recent",
       page = 1,
       pageSize = 10,
@@ -248,17 +249,14 @@ app.get(
     const offset = (page - 1) * pageSize;
 
     const sortOption =
-      orderBy === recent ? { createdAt: "desc" } : { createdAt: "asc" };
+      orderBy === "recent" ? { createdAt: "desc" } : { likeCount: "desc" };
     const search = keyword
       ? {
-          OR: [
-            { title: { contains: keyword, mode: "insensitive" } },
-            { description: { contains: keyword, mode: "insensitive" } },
-          ],
+          OR: [{ title: { contains: keyword, mode: "insensitive" } }],
         }
       : {};
     const articles = await prisma.article.findMany({
-      where: { search },
+      where: search,
       orderBy: sortOption,
       skip: parseInt(offset),
       take: parseInt(pageSize),
@@ -287,7 +285,7 @@ app.post(
 );
 
 app.patch(
-  "/article/comment/:id",
+  "/article/:id/comment",
   asyncHandler(async (req, res) => {
     assert(req.body, PatchComment);
     const commentId = req.params.id;
@@ -306,7 +304,7 @@ app.patch(
 );
 
 app.delete(
-  "/article/comment/:id",
+  "/article/:id/comment",
   asyncHandler(async (req, res) => {
     const commentId = req.params.id;
     await prisma.comment.findUniqueOrThrow({

@@ -36,10 +36,22 @@ Content-Type: application/json
 GET http://localhost:3000/products?keyword=Lap
 
 ###
-PATCH  http://localhost:3001/article/comment/cd4bf503-b264-4864-8b0b-4194a8719e3b
+GET http://localhost:3100/article
+###
+POST http://localhost:3100/article
 Content-Type: application/json
 
 {
-  "content": "This is tasdhe content of my first article."
+  "title": "test",
+  "content": "High performance laptop."
 }
 
+
+###
+GET http://localhost:3100/article/dc79959a-8f68-4ee0-aa5d-cfbc13874d2f
+
+###
+GET http://localhost:3100/article/dc79959a-8f68-4ee0-aa5d-cfbc13874d2f/comments
+
+###
+DELETE  http://localhost:3100/article/12f4972e-1a63-4f2c-a8d4-92c6c97b1880/comment
