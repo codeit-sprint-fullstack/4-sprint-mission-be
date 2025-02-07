@@ -184,7 +184,7 @@ async function getComments(req, res, next) {
       where: {
         articleId,
       },
-      take: parseInt(pageSize),
+      take: pageSize,
       cursor: cursor ? { id: cursor } : undefined,
       orderBy: {
         createdAt: "asc",

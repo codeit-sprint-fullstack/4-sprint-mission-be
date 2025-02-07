@@ -171,6 +171,68 @@ async function disLikeProduct(req, res, next) {
   }
 }
 
+async function getComments(req, res, next) {
+  try {
+    const { cursor, pageSize } = req.query;
+
+    const productId = req.params.productId;
+
+    await prisma.product.findUniqueOrThrow({
+      where: { id: productId },
+    });
+
+    const comments = await prisma.comment.findMany({
+      where: {
+        productId,
+      },
+      take: pageSize,
+      cursor: cursor ? { id: cursor } : undefined,
+      orderBy: {
+        createdAt: "asc",
+      },
+      include: {
+        writer: { select: { id: true, nickname: true, image: true } },
+      },
+      // omit: { writerId: true },
+    });
+
+    const nextCursor =
+      comments.length === pageSize ? comments[comments.length - 1].id : null;
+
+    res.status(200).send({
+      comments,
+      nextCursor,
+    });
+  } catch (e) {
+    next(e);
+  }
+}
+
+async function createComment(req, res, next) {
+  try {
+    const userId = req.userId;
+    const productId = req.params.productId;
+    await prisma.product.findUniqueOrThrow({
+      where: { id: productId },
+    });
+    const comment = await prisma.comment.create({
+      data: {
+        content: req.body.content,
+        productId: productId,
+        writerId: userId,
+      },
+      include: {
+        writer: { select: { id: true, nickname: true, image: true } },
+      },
+      // omit: { writerId: true },
+    });
+
+    res.status(201).send(comment);
+  } catch (e) {
+    next(e);
+  }
+}
+
 const productService = {
   getProducts,
   getProduct,
@@ -179,5 +241,7 @@ const productService = {
   deleteProduct,
   likeProduct,
   disLikeProduct,
+  getComments,
+  createComment,
 };
 module.exports = productService;

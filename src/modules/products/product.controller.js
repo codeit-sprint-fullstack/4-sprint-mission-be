@@ -6,6 +6,10 @@ const {
 } = require("../../middlewares/validation/product.validation");
 const productService = require("./product.service");
 const { authenticatedOnly } = require("../../middlewares/auth.middleware");
+const {
+  validateCommentSchema,
+  validateGetComments,
+} = require("../../middlewares/validation/comment.validation");
 
 const productRouter = express.Router();
 
@@ -38,5 +42,19 @@ productRouter.delete(
   authenticatedOnly,
   productService.disLikeProduct
 );
+
+productRouter.post(
+  "/:productId/comments",
+  authenticatedOnly,
+  validateCommentSchema,
+  productService.createComment
+);
+productRouter.get(
+  "/:productId/comments",
+  validateGetComments,
+  productService.getComments
+);
+
+productRouter.delete("/:productId/comments");
 
 module.exports = productRouter;

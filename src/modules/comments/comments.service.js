@@ -3,9 +3,12 @@ const prisma = require("../../db/prisma/client");
 async function updateCommnet(req, res, next) {
   try {
     const commentId = req.params.commentId;
-    await prisma.comment.findUniqueOrThrow({
+    const userId = req.userId;
+    const commentForfindUser = await prisma.comment.findUniqueOrThrow({
       where: { id: commentId },
     });
+    if (commentForfindUser.writerId !== userId)
+      throw new Error("401/Unathorized");
     const { content } = req.body;
 
     const comment = await prisma.comment.update({
@@ -22,9 +25,12 @@ async function updateCommnet(req, res, next) {
 async function deleteCommnet(req, res, next) {
   try {
     const commentId = req.params.commentId;
-    await prisma.comment.findUniqueOrThrow({
+    const userId = req.userId;
+    const commentForfindUser = prisma.comment.findUniqueOrThrow({
       where: { id: commentId },
     });
+    if (commentForfindUser.writerId !== userId)
+      throw new Error("401/Unathorized");
     await prisma.comment.delete({
       where: { id: commentId },
     });

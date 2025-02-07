@@ -60,10 +60,15 @@ async function signUp(req, res, next) {
     const encryptedPassword = await bcrypt.hash(password, 12);
 
     const result = await prisma.$transaction(async (tx) => {
-      const isExistingUser = await tx.user.findUnique({
+      const isExistingEmail = await tx.user.findUnique({
         where: { email },
       });
-      if (isExistingUser) throw new Error("400/email is already exist");
+      if (isExistingEmail) throw new Error("400/email is already exist");
+
+      const isExistingNickname = await tx.user.findUnique({
+        where: { nickname },
+      });
+      if (isExistingNickname) throw new Error("400/nickname is already exist");
 
       const newUser = await tx.user.create({
         data: { email, nickname, encryptedPassword },

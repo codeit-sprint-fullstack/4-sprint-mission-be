@@ -4,10 +4,12 @@ const {
   validatePageQuary,
   validateCreateAritcle,
   validateUpdateAritcle,
-  validateGetComments,
-  validateCommentSchema,
 } = require("../../middlewares/validation/article.validation");
 const { authenticatedOnly } = require("../../middlewares/auth.middleware");
+const {
+  validateCommentSchema,
+  validateGetComments,
+} = require("../../middlewares/validation/comment.validation");
 
 const articleRouter = express.Router();
 
@@ -48,7 +50,6 @@ articleRouter.post(
 articleRouter.get(
   "/:articleId/comments",
   validateGetComments,
-  authenticatedOnly,
   articleService.getComments
 );
 

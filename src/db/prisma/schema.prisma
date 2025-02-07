@@ -18,7 +18,7 @@ model User {
   id                String            @id @default(uuid())
   email             String            @unique
   encryptedPassword String
-  nickname          String
+  nickname          String            @unique
   image             String?
   createdAt         DateTime          @default(now())
   updatedAt         DateTime          @updatedAt
@@ -35,13 +35,14 @@ model Product {
   description     String
   price           Int
   tags            String[]
-  favoriteCount       Int               @default(0)
+  favoriteCount   Int               @default(0)
   images          String[]
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @updatedAt
-  owner            User              @relation(fields: [ownerId], references: [id])
-  ownerId          String @map("userId")
+  owner           User              @relation(fields: [ownerId], references: [id])
+  ownerId         String            @map("userId")
   favoriteProduct FavoriteProduct[]
+  comment         Comment[]
 }
 
 model Article {
@@ -50,9 +51,9 @@ model Article {
   content         String
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @updatedAt
-  Comment         Comment[]
+  comment         Comment[]
   image           String?
-  favoriteCount       Int               @default(0)
+  favoriteCount   Int               @default(0)
   writer          User              @relation(fields: [writerId], references: [id])
   writerId        String            @map("userId")
   favoriteArticle FavoriteArticle[]
@@ -63,10 +64,12 @@ model Comment {
   content   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  article   Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
-  articleId String
+  article   Article? @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  articleId String?
   writer    User     @relation(fields: [writerId], references: [id])
   writerId  String   @map("userId")
+  product   Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String?
 }
 
 model FavoriteArticle {
