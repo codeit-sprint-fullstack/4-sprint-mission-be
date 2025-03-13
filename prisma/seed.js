@@ -3,8 +3,6 @@ import {
   // USERS,
   // USER_PREFERENCES,
   PRODUCTS,
-  // ORDERS,
-  // ORDER_ITEMS,
 } from './mock.js';
 
 const prisma = new PrismaClient();
@@ -54,3 +52,4 @@ main()
     await prisma.$disconnect();
     process.exit(1);
   });
+

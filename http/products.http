@@ -1,4 +1,4 @@
-GET http://localhost:5500/products?limit=3
+GET http://localhost:5500/products?limit=3&skip=1
 
 ###
 GET http://localhost:5500/products?keyword=아이폰

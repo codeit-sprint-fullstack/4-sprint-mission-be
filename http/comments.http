@@ -16,7 +16,7 @@ Content-Type: application/json
 }
 
 ###
-POST http://localhost:5500/products/1e112c02-7c92-4d52-b76e-485e41e3f64d/comments
+POST http://localhost:5500/articles/1a64da21-107b-4a6e-9998-0f67e6305b96/comments
 Content-Type: application/json
 
 {

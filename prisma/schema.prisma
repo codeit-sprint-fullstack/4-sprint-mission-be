@@ -14,29 +14,33 @@ datasource db {
 }
 
 model Product {
-  id          String    @id @default(uuid())
-  name        String
-  description String
-  price       Int
-  tags        String[]
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  comments    Comment[]
+  id           String        @id @default(uuid())
+  writer       String?
+  name         String
+  description  String
+  price        Int
+  tags         String[]
+  imgUrls      String[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  comments     Comment[]
+  productLikes ProductLike[]
 }
 
 model Article {
-  id        String    @id @default(uuid())
-  title     String
-  content   String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  // user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
-  // userId    String?
-  comments  Comment[]
+  id           String        @id @default(uuid())
+  writer       String?
+  title        String
+  content      String
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  comments     Comment[]
+  articleLikes ArticleLike[]
 }
 
 model Comment {
   id        String   @id @default(uuid())
+  writer    String?
   content   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -46,10 +50,36 @@ model Comment {
   productId String?
 }
 
-// model User {
-//   id        String   @id @default(uuid())
-//   nickname  String   @unique
-//   createdAt DateTime @default(now())
-//   updatedAt DateTime @updatedAt
-//   Article      Article[]
-// }
+model User {
+  id                String        @id @default(uuid())
+  email             String        @unique
+  encryptedPassword String
+  nickname          String
+  image             String
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  productLikes      ProductLike[]
+  articleLikes      ArticleLike[]
+}
+
+model ProductLike {
+  id        String   @id @default(uuid())
+  product   Product  @relation(fields: [productId], references: [id])
+  productId String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  createdAt DateTime @default(now())
+
+  @@unique([productId, userId])
+}
+
+model ArticleLike {
+  id        String   @id @default(uuid())
+  article   Article  @relation(fields: [articleId], references: [id])
+  articleId String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  createdAt DateTime @default(now())
+
+  @@unique([articleId, userId])
+}

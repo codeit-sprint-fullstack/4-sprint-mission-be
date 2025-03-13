@@ -1,0 +1,11 @@
+GET http://localhost:5500/users
+
+###
+POST http://localhost:5500/users/sign-up
+Content-Type: application/json
+
+{
+  "email":"test@test.com",
+  "nickname":"별명임",
+  "password":"dsalkfjaslkf"
+}
